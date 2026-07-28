@@ -1,0 +1,446 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;900&display=swap');
+
+:root {
+    --bg-dark: #050505;
+    --bg-card: #0a0a0a;
+    --accent-blue: #0044cc;
+    --accent-neon: #00f0ff;
+    --text-main: #ffffff;
+    --text-muted: #888888;
+    --font-heading: 'Bebas Neue', cursive;
+    --font-body: 'Inter', sans-serif;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Background Texture / Grid */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    letter-spacing: 2px;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+/* Topbar */
+.topbar {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-text {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    display: flex;
+    gap: 8px;
+    transform: skewX(-10deg);
+}
+
+.brand-inteligente {
+    color: var(--accent-neon);
+}
+
+/* Brutalist Hero Section */
+.hero {
+    position: relative;
+    padding: 120px 0 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-heading);
+    font-size: 15vw;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.05);
+    z-index: -1;
+    pointer-events: none;
+    line-height: 0.8;
+}
+
+.hero-bg-text.neon {
+    -webkit-text-stroke: 2px rgba(0, 240, 255, 0.05);
+    top: 70%;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 6rem;
+    color: #fff;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    margin-bottom: 10px;
+}
+
+.hero-title .highlight {
+    color: var(--accent-neon);
+    display: inline-block;
+    transform: skewX(-10deg);
+}
+
+.hero-tagline {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 40px;
+}
+
+.hero-tagline .highlight-blue {
+    color: var(--accent-neon);
+    font-weight: 900;
+}
+
+/* Sections */
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 4rem;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+    transform: skewX(-10deg);
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: -10px;
+    right: -10px;
+    height: 30%;
+    background: var(--accent-blue);
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.section-header p {
+    color: var(--accent-neon);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Grid System */
+.grid {
+    display: grid;
+    gap: 30px;
+    margin-bottom: 80px;
+}
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
+/* Brutalist Cards */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-neon);
+    box-shadow: 0 10px 40px rgba(0, 240, 255, 0.1);
+}
+
+.card-image {
+    width: 100%;
+    height: 350px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.2);
+    transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.card:hover .card-image img {
+    filter: grayscale(0%) contrast(1.1);
+    transform: scale(1.05);
+}
+
+.card-image::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0) 100%);
+}
+
+.card-image-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    z-index: 2;
+}
+
+.card-image-overlay h3 {
+    font-size: 3rem;
+    color: var(--text-main);
+    text-shadow: 2px 2px 0px var(--accent-blue);
+    transform: skewX(-10deg);
+}
+
+.card-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-content h4 {
+    font-size: 2rem;
+    color: var(--accent-neon);
+    margin-bottom: 15px;
+}
+
+.card-content p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 30px;
+    flex-grow: 1;
+}
+
+/* Brutalist Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 16px 32px;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+    position: relative;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--accent-blue);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--accent-neon);
+    color: #000;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+    transform: scale(1.02);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* Expande a área de clique do botão para todo o cartão */
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -1000px; /* Hack para não restringir pelo clip-path do botão e sim cobrir o card pai */
+    left: -1000px;
+    right: -1000px;
+    bottom: -1000px;
+    z-index: 10;
+}
+.card { position: relative; } /* Para conter o pseudo-elemento invisível de expansão de clique - vamos arrumar isso no JS se for preciso ou no HTML. O ideal é cobrir no card. */
+
+/* Melhor forma de expandir clique: pseudo elemento no cartao ao invés do botão */
+.card > a.btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 10;
+}
+
+
+/* Main Card (500 treinos) */
+.main-card {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 20px rgba(0, 85, 204, 0.2);
+}
+.main-card .card-image {
+    height: 450px;
+}
+.main-card:hover {
+    border-color: var(--accent-neon);
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+}
+
+.badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--accent-neon);
+    color: #000;
+    padding: 8px 16px;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    z-index: 2;
+    transform: skewX(-10deg);
+}
+
+/* Materials Specific */
+.small-img {
+    height: 250px;
+}
+.small-img img {
+    object-position: center;
+}
+
+/* Chat Widget */
+.chat-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    background: var(--bg-card);
+    border: 2px solid var(--accent-neon);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.chat-widget:hover {
+    transform: scale(1.1) rotate(10deg);
+    background: var(--accent-neon);
+}
+.chat-widget:hover svg { stroke: #000; }
+
+/* Footer */
+.footer {
+    padding: 80px 20px 40px;
+    background: rgba(5,5,5,0.8);
+    position: relative;
+    z-index: 10;
+    margin-top: 50px;
+}
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-neon), transparent);
+    opacity: 0.5;
+}
+.footer-brand {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    transform: skewX(-10deg);
+}
+.footer-brand .highlight {
+    color: var(--accent-neon);
+}
+.footer p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.footer a {
+    color: var(--accent-neon);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.footer a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px var(--accent-neon);
+}
+.footer-disclaimer {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    max-width: 600px;
+    margin: 30px auto 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .hero-title { font-size: 4rem; }
+    .section-header h2 { font-size: 3rem; }
+}
+
+@media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .hero-bg-text { font-size: 25vw; }
+    .hero-title { font-size: 3.5rem; }
+    .footer-brand { font-size: 2rem; }
+}
