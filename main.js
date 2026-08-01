@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     updateOverallProgress();
 
-    // 4. LÓGICA DO PLAYER E MODAL DE STREAMING (100% LARGURA)
+    // 4. LÓGICA DO PLAYER E MODAL DE STREAMING (2 COLUNAS & PLAYER NATIVO PREVIEW)
     const modal = document.getElementById('streaming-modal');
     const backdrop = document.getElementById('modal-backdrop');
     const closeBtn = document.getElementById('close-modal-btn');
@@ -189,7 +189,89 @@ document.addEventListener("DOMContentLoaded", () => {
     const markCompleteBtn = document.getElementById('mark-complete-btn');
     const completeBtnText = document.getElementById('complete-btn-text');
 
+    const videoGridContainer = document.getElementById('video-grid-container');
+    const searchBoxContainer = document.getElementById('search-box-container');
+    const searchVideoInput = document.getElementById('search-video-input');
+
     let currentActiveModuleKey = null;
+    let currentActiveVideoId = null;
+
+    // Carregar Vídeo Específico no Player sem Pedir Conta
+    function playVideo(video, moduleTitle) {
+        currentActiveVideoId = video.id;
+
+        if (currentTitleEl) currentTitleEl.textContent = video.title;
+        if (currentDescEl) currentDescEl.textContent = `Treino do ${moduleTitle}. Toque na tela do vídeo para dar o play em tela cheia.`;
+
+        if (videoLoader) videoLoader.style.opacity = '1';
+
+        // URL de Preview direto do Google Drive (NÃO pede conta no celular!)
+        const previewUrl = `https://drive.google.com/file/d/${video.id}/preview`;
+        mainIframe.src = previewUrl;
+
+        mainIframe.onload = () => {
+            if (videoLoader) videoLoader.style.opacity = '0';
+        };
+        setTimeout(() => {
+            if (videoLoader) videoLoader.style.opacity = '0';
+        }, 1200);
+
+        // Destacar card ativo no grid
+        const allCards = document.querySelectorAll('.video-card-item');
+        allCards.forEach(card => {
+            if (card.getAttribute('data-id') === video.id) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+        });
+
+        // Rolar até o topo do player em telas menores
+        if (window.innerWidth <= 768) {
+            const playerArea = document.querySelector('.video-player-area');
+            if (playerArea) playerArea.scrollTop = 0;
+        }
+    }
+
+    // Renderizar a Lista de Vídeos em Grid de 2 Colunas
+    function renderVideoGrid(videos, moduleTitle) {
+        if (!videoGridContainer) return;
+        videoGridContainer.innerHTML = '';
+
+        if (!videos || videos.length === 0) {
+            videoGridContainer.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1; padding: 20px; text-align: center;">Nenhum exercício encontrado com esse termo.</p>';
+            return;
+        }
+
+        videos.forEach((video, index) => {
+            const card = document.createElement('div');
+            card.className = `video-card-item ${video.id === currentActiveVideoId ? 'active' : ''}`;
+            card.setAttribute('data-id', video.id);
+
+            // Imagem de Thumbnail ou fallback
+            const thumbUrl = video.thumb || 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400&q=80';
+
+            card.innerHTML = `
+                <div class="video-thumb-wrapper">
+                    <img src="${thumbUrl}" alt="${video.title}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400&q=80';">
+                    <div class="play-badge-icon">▶</div>
+                </div>
+                <div class="video-card-info">
+                    <div class="video-card-title">${video.title}</div>
+                    <div class="video-card-status">
+                        ${video.id === currentActiveVideoId ? '▶ TOCANDO AGORA' : 'VER TREINO'}
+                    </div>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                playVideo(video, moduleTitle);
+                renderVideoGrid(videos, moduleTitle); // Atualiza os status dos cards
+            });
+
+            videoGridContainer.appendChild(card);
+        });
+    }
 
     // Abrir Modal do Módulo Selecionado
     function openModulePlayer(moduleKey) {
@@ -201,26 +283,47 @@ document.addEventListener("DOMContentLoaded", () => {
         moduleBadgeEl.textContent = module.badge;
         moduleTitleEl.textContent = module.title;
         driveBackupLink.href = module.driveFolder;
-        currentTitleEl.textContent = module.title;
-        currentDescEl.textContent = module.desc;
 
-        if (videoLoader) videoLoader.style.opacity = '1';
+        // Verificar se temos os vídeos extraídos no banco de dados
+        const moduleVideos = (typeof VIDEOS_DATABASE !== 'undefined' && VIDEOS_DATABASE[moduleKey]) ? VIDEOS_DATABASE[moduleKey] : [];
 
-        // URL oficial do visualizador de galeria do Google Drive em 100% de largura
-        const embeddedFolderUrl = `https://drive.google.com/embeddedfolderview?id=${module.folderId}#grid`;
-        mainIframe.src = embeddedFolderUrl;
+        // Exibir caixa de busca apenas no módulo da biblioteca
+        if (moduleKey === 'biblioteca') {
+            if (searchBoxContainer) searchBoxContainer.classList.remove('hidden');
+            if (searchVideoInput) searchVideoInput.value = '';
+        } else {
+            if (searchBoxContainer) searchBoxContainer.classList.add('hidden');
+        }
 
-        mainIframe.onload = () => {
-            if (videoLoader) videoLoader.style.opacity = '0';
-        };
-        setTimeout(() => {
-            if (videoLoader) videoLoader.style.opacity = '0';
-        }, 1200);
+        if (moduleVideos.length > 0) {
+            // Tocar o primeiro vídeo automaticamente
+            playVideo(moduleVideos[0], module.title);
+            renderVideoGrid(moduleVideos, module.title);
+        } else {
+            // Fallback para galeria do Google Drive caso o banco não tenha vídeos
+            const embeddedFolderUrl = `https://drive.google.com/embeddedfolderview?id=${module.folderId}#grid`;
+            mainIframe.src = embeddedFolderUrl;
+        }
 
         updateCompletionButtonState(moduleKey);
 
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+    }
+
+    // Evento do Campo de Busca da Biblioteca (+500 Treinos)
+    if (searchVideoInput) {
+        searchVideoInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim().toLowerCase();
+            const allBiblio = (typeof VIDEOS_DATABASE !== 'undefined' && VIDEOS_DATABASE['biblioteca']) ? VIDEOS_DATABASE['biblioteca'] : [];
+            
+            if (!query) {
+                renderVideoGrid(allBiblio, "Biblioteca");
+            } else {
+                const filtered = allBiblio.filter(v => v.title.toLowerCase().includes(query));
+                renderVideoGrid(filtered, "Biblioteca");
+            }
+        });
     }
 
     // Fechar Modal
@@ -275,3 +378,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+

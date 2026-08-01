@@ -297,7 +297,7 @@
 
             <!-- BANNER DICA DE REPRODUÇÃO -->
             <div class="player-tip-bar">
-                <span>💡 <strong>Dica de Uso:</strong> Clique duas vezes sobre a miniatura de qualquer vídeo abaixo para dar PLAY direto em tela cheia!</span>
+                <span>💡 <strong>Toque em qualquer vídeo da lista abaixo</strong> para dar PLAY sem precisar de login ou app!</span>
             </div>
 
             <!-- LAYOUT PRINCIPAL DO PLAYER -->
@@ -307,7 +307,7 @@
                         <iframe id="main-video-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
                         <div class="video-loader" id="video-loader">
                             <div class="spinner"></div>
-                            <span>Carregando treinos...</span>
+                            <span>Carregando treino...</span>
                         </div>
                     </div>
 
@@ -321,6 +321,19 @@
                                 <span class="check-ic">✓</span>
                                 <span id="complete-btn-text">Marcar Módulo como Concluído</span>
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- CAMPO DE BUSCA (RELEVANTE PARA BIBLIOTECA DE +500 VÍDEOS) -->
+                    <div class="search-box-container hidden" id="search-box-container">
+                        <input type="text" id="search-video-input" placeholder="🔍 Buscar exercício... (Ex: Abdominal, Agachamento, HIIT)" autocomplete="off">
+                    </div>
+
+                    <!-- GRID DE AULAS / VÍDEOS (2 COLUNAS NO CELULAR) -->
+                    <div class="video-grid-section">
+                        <h4 class="grid-section-title">SELECIONE O VÍDEO PARA ASSISTIR:</h4>
+                        <div class="video-grid-container" id="video-grid-container">
+                            <!-- Os cards de vídeo serão gerados dinamicamente via JS -->
                         </div>
                     </div>
                 </div>
@@ -345,6 +358,7 @@
         </div>
     </footer>
 
+    <script src="videos_database.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
