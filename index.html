@@ -3,18 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Treino Inteligente - Área de Membros</title>
+    <title>Treino Inteligente - Plataforma Oficial de Membros</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+
+    <!-- ════════════════════════════════════════════════════════
+         TELA DE LOGIN EXCLUSIVA POR E-MAIL (SUPABASE AUTH)
+    ════════════════════════════════════════════════════════ -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-card">
+            <div class="login-brand">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="var(--accent-neon)">
+                    <rect x="1" y="7" width="3" height="10" rx="1" />
+                    <rect x="20" y="7" width="3" height="10" rx="1" />
+                    <rect x="5" y="4" width="4" height="16" rx="1.5" />
+                    <rect x="15" y="4" width="4" height="16" rx="1.5" />
+                    <rect x="8" y="10" width="8" height="4" />
+                </svg>
+                <h2>TREINO <span>INTELIGENTE</span></h2>
+            </div>
+            
+            <p class="login-sub">Digite o e-mail utilizado na compra para liberar seu acesso às aulas:</p>
+
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="login-email">Seu E-mail de Compra:</label>
+                    <input type="email" id="login-email" placeholder="seuemail@exemplo.com" required autocomplete="email">
+                </div>
+
+                <div class="login-error-msg" id="login-error-msg"></div>
+
+                <button type="submit" class="btn btn-primary btn-login" id="login-submit-btn">
+                    <span>ACESSAR MINHA CONTA</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </form>
+
+            <div class="login-footer-note">
+                🔒 Acesso seguro e verificado automaticamente.
+            </div>
+        </div>
+    </div>
+
+    <!-- TOPBAR -->
     <header class="topbar">
-        <div class="container">
+        <div class="container topbar-inner">
             <div class="brand-logo horizontal">
-                <svg class="icon-dumbbell" width="28" height="28" viewBox="0 0 24 24" fill="var(--accent-blue)">
+                <svg class="icon-dumbbell" width="28" height="28" viewBox="0 0 24 24" fill="var(--accent-neon)">
                     <rect x="1" y="7" width="3" height="10" rx="1" />
                     <rect x="20" y="7" width="3" height="10" rx="1" />
                     <rect x="5" y="4" width="4" height="16" rx="1.5" />
@@ -26,38 +69,57 @@
                     <span class="brand-inteligente">INTELIGENTE</span>
                 </div>
             </div>
+
+            <!-- PROGRESO GERAL DO ALUNO & USER EMAIL -->
+            <div class="topbar-right-user">
+                <div class="user-logged-info">
+                    <span id="logged-user-email">aluno@email.com</span>
+                    <button class="logout-btn" id="logout-btn" title="Sair da conta">Sair</button>
+                </div>
+
+                <div class="user-progress-bar">
+                    <div class="progress-info">
+                        <span>PROGRESSO: <strong id="progress-percent">0%</strong></span>
+                        <small id="progress-count">0 de 5 Módulos Concluídos</small>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill-bar" id="progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <main class="container">
-        <!-- Hero Section -->
+        <!-- HERO STREAMING BANNER -->
         <section class="hero">
             <div class="hero-bg-text">TREINO</div>
             <div class="hero-bg-text neon">INTELIGENTE</div>
             
             <div class="hero-content">
-                <h1 class="hero-title">TREINO <span class="highlight">INTELIGENTE</span></h1>
+                <div class="platform-badge">
+                    <span class="live-pulse"></span>
+                    <span>PLATAFORMA EXCLUSIVA DE STREAMING</span>
+                </div>
+
+                <h1 class="hero-title">PORTAL DE <span class="highlight">TREINOS</span></h1>
+                
                 <div class="hero-tagline">
                     TREINE COM <span class="highlight-blue">CIÊNCIA</span>. EVOLUA COM <span class="highlight-blue">CONSISTÊNCIA</span>.
-                </div>
-                
-                <div class="section-header">
-                    <h2>ÁREA DE MEMBROS</h2>
-                    <p>Acesse todos os materiais e treinos do programa.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Weekly Modules -->
-        <section class="modules">
+        <!-- CATEGORIAS DE MÓDULOS SEMANAIS -->
+        <section class="modules" id="modulos-section">
             <div class="section-header text-center">
-                <h2>MÓDULOS SEMANAIS</h2>
-                <p>Siga a sequência das semanas para resultados progressivos</p>
+                <h2>PROGRAMA 4 SEMANAS</h2>
+                <p>Clique em um módulo para abrir o player com os vídeos da semana</p>
             </div>
 
             <div class="grid grid-2">
-                <!-- Week 1 -->
-                <div class="card module-card">
+                <!-- SEMANA 1 -->
+                <div class="card module-card" data-module="semana1">
                     <div class="card-image">
                         <img src="assets/semana1.png" alt="Semana 1">
                         <div class="card-image-overlay">
@@ -65,14 +127,18 @@
                         </div>
                     </div>
                     <div class="card-content">
-                        <h4>SEMANA 1</h4>
-                        <p>Inicie sua jornada com os fundamentos do Treino Inteligente. Foco em base, postura e controle dos movimentos.</p>
-                        <a href="https://drive.google.com/drive/folders/1IuJVFY6p-6d6YaJcdJcakvmcNgQ1H2oF?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Acessar Semana 1 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        <span class="module-episodes-badge">5 TREINOS GUIADOS (DIA 1 AO 5)</span>
+                        <h4>SEMANA 1: FUNDAMENTOS</h4>
+                        <p>Inicie sua jornada com a base do Treino Inteligente. Foco em postura, adaptação e controle dos movimentos.</p>
+                        <button class="btn btn-primary open-player-btn" data-module="semana1">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            ASSISTIR SEMANA 1
+                        </button>
                     </div>
                 </div>
 
-                <!-- Week 2 -->
-                <div class="card module-card">
+                <!-- SEMANA 2 -->
+                <div class="card module-card" data-module="semana2">
                     <div class="card-image">
                         <img src="assets/semana2.png" alt="Semana 2">
                         <div class="card-image-overlay">
@@ -80,14 +146,18 @@
                         </div>
                     </div>
                     <div class="card-content">
-                        <h4>SEMANA 2</h4>
-                        <p>Aumente sua resistência e aprenda a manter o ritmo com consistência e força. É hora de desafiar seus limites.</p>
-                        <a href="https://drive.google.com/drive/folders/1E73HbV5FCb8g-9HNPqeKQZ72PgjJEXEt?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Acessar Semana 2 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        <span class="module-episodes-badge">5 TREINOS GUIADOS (DIA 1 AO 5)</span>
+                        <h4>SEMANA 2: RESISTÊNCIA</h4>
+                        <p>Aumente sua resistência física e aprenda a manter o ritmo com consistência e força muscular.</p>
+                        <button class="btn btn-primary open-player-btn" data-module="semana2">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            ASSISTIR SEMANA 2
+                        </button>
                     </div>
                 </div>
 
-                <!-- Week 3 -->
-                <div class="card module-card">
+                <!-- SEMANA 3 -->
+                <div class="card module-card" data-module="semana3">
                     <div class="card-image">
                         <img src="assets/semana3.png" alt="Semana 3">
                         <div class="card-image-overlay">
@@ -95,14 +165,18 @@
                         </div>
                     </div>
                     <div class="card-content">
-                        <h4>SEMANA 3</h4>
-                        <p>Intensifique seus treinos e desenvolva explosão e controle muscular para extrair o máximo do seu corpo.</p>
-                        <a href="https://drive.google.com/drive/folders/1WyNwwuMqX38kvG9UjGvtHkG8WSk63qj0?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Acessar Semana 3 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        <span class="module-episodes-badge">5 TREINOS GUIADOS (DIA 1 AO 5)</span>
+                        <h4>SEMANA 3: EXPLOSÃO (HIIT)</h4>
+                        <p>Intensifique seus treinos com estímulos de alta densidade para acelerar o metabolismo e queimar gordura.</p>
+                        <button class="btn btn-primary open-player-btn" data-module="semana3">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            ASSISTIR SEMANA 3
+                        </button>
                     </div>
                 </div>
 
-                <!-- Week 4 -->
-                <div class="card module-card">
+                <!-- SEMANA 4 -->
+                <div class="card module-card" data-module="semana4">
                     <div class="card-image">
                         <img src="assets/semana4.png" alt="Semana 4">
                         <div class="card-image-overlay">
@@ -110,34 +184,42 @@
                         </div>
                     </div>
                     <div class="card-content">
-                        <h4>SEMANA 4</h4>
-                        <p>Etapa final. Foque em superação e mantenha o ritmo até o fim do desafio. Colha os resultados do seu esforço.</p>
-                        <a href="https://drive.google.com/drive/folders/18DSYp4aEffnIdhrrNCkpqb5j6fMjD1tI?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Acessar Semana 4 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        <span class="module-episodes-badge">5 TREINOS GUIADOS (DIA 1 AO 5)</span>
+                        <h4>SEMANA 4: SUPERAÇÃO</h4>
+                        <p>Etapa final. Foque em máxima definição e fortalecimento muscular. Colha os resultados do seu esforço.</p>
+                        <button class="btn btn-primary open-player-btn" data-module="semana4">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            ASSISTIR SEMANA 4
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Main Trainings Section -->
+        <!-- BIBLIOTECA COMPLETA DE +500 TREINOS -->
         <section class="main-trainings">
             <div class="card main-card">
                 <div class="card-image">
-                    <img src="assets/main_workout.png" alt="Treinos Funcionais">
-                    <span class="badge">PRINCIPAL</span>
+                    <img src="assets/main_workout.png" alt="Biblioteca Completa">
+                    <span class="badge">BIBLIOTECA COMPLETA</span>
                 </div>
                 <div class="card-content">
-                    <h4>+500 TREINOS FUNCIONAIS</h4>
-                    <p>Treinos funcionais guiados em vídeo — treine onde quiser, sem equipamentos ou com equipamentos básicos.</p>
-                    <a href="https://drive.google.com/drive/folders/1qFgRVdKxGDAeB9A3J3xh00e9acYgKetp?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Acessar Treinos <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                    <span class="module-episodes-badge">+300 VÍDEOS INDIVIDUAIS</span>
+                    <h4>BIBLIOTECA DE +500 TREINOS FUNCIONAIS</h4>
+                    <p>Acesse treinos e exercícios individuais categorizados por grupos musculares: Abdominais, Pernas & Glúteos, Braços e Cardios Rápidos.</p>
+                    <button class="btn btn-primary open-player-btn" data-module="biblioteca">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        ABRIR BIBLIOTECA COMPLETA
+                    </button>
                 </div>
             </div>
         </section>
 
-        <!-- Complementary Materials -->
+        <!-- MATERIAIS DE APOIO EM PDF -->
         <section class="materials">
             <div class="section-header text-center">
-                <h2>CONTEÚDOS COMPLEMENTARES</h2>
-                <p>Materiais de apoio para sua transformação</p>
+                <h2>MATERIAIS EM PDF (BÔNUS)</h2>
+                <p>Baixe ou visualize seus materiais de apoio diretamente aqui</p>
             </div>
 
             <div class="grid grid-3">
@@ -148,7 +230,10 @@
                     <div class="card-content">
                         <h4>FICHA DE TREINAMENTO</h4>
                         <p>Registre seus treinos e acompanhe sua evolução física com dados detalhados.</p>
-                        <a href="assets/ficha_treino.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Baixar Ficha <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
+                        <a href="assets/ficha_treino.pdf" target="_blank" class="btn btn-primary">
+                            BAIXAR PDF
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </a>
                     </div>
                 </div>
 
@@ -157,9 +242,12 @@
                         <img src="assets/materials.png" alt="Planilha Funcional">
                     </div>
                     <div class="card-content">
-                        <h4>PLANILHA DE TREINAMENTO FUNCIONAL</h4>
+                        <h4>PLANILHA DE TREINO FUNCIONAL</h4>
                         <p>Monte e acompanhe seu treino completo com a planilha funcional personalizada.</p>
-                        <a href="assets/planilha_funcional.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Abrir Planilha <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        <a href="assets/planilha_funcional.pdf" target="_blank" class="btn btn-primary">
+                            BAIXAR PDF
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </a>
                     </div>
                 </div>
 
@@ -168,19 +256,79 @@
                         <img src="assets/materials.png" alt="Manual de Musculação">
                     </div>
                     <div class="card-content">
-                        <h4>MANUAL DE EXERCÍCIOS DE MUSCULAÇÃO</h4>
+                        <h4>MANUAL DE MUSCULAÇÃO</h4>
                         <p>Aprenda a execução correta dos principais exercícios de musculação.</p>
-                        <a href="assets/manual_musculacao.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Acessar Manual <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                        <a href="assets/manual_musculacao.pdf" target="_blank" class="btn btn-primary">
+                            BAIXAR PDF
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
         
-        <a href="https://wa.me/559392332026" target="_blank" rel="noopener noreferrer" class="chat-widget">
+        <!-- SUPORTE WHATSAPP -->
+        <a href="https://wa.me/559392332026?text=Ol%C3%A1!%20Sou%20aluno(a)%20do%20Treino%20Inteligente%20e%20preciso%20de%20ajuda" target="_blank" rel="noopener noreferrer" class="chat-widget" title="Falar com o Suporte">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-neon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
         </a>
     </main>
 
+    <!-- ════════════════════════════════════════════════════════
+         MODAL DE PLAYER 100% LARGURA (NETFLIX STYLE - EXPANDIDO)
+    ════════════════════════════════════════════════════════ -->
+    <div class="streaming-modal" id="streaming-modal">
+        <div class="modal-backdrop" id="modal-backdrop"></div>
+        <div class="modal-container">
+            <!-- HEADER DO MODAL -->
+            <div class="modal-header">
+                <div class="modal-title-info">
+                    <span class="modal-badge-module" id="player-module-badge">SEMANA 1</span>
+                    <h3 id="player-module-title">Módulo Semana 1: Fundamentos</h3>
+                </div>
+                
+                <div class="modal-header-actions">
+                    <a href="#" id="drive-backup-link" target="_blank" class="drive-backup-btn" title="Abrir pasta completa no Google Drive">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        Abrir Pasta no Google Drive
+                    </a>
+                    <button class="close-modal-btn" id="close-modal-btn">&times;</button>
+                </div>
+            </div>
+
+            <!-- BANNER DICA DE REPRODUÇÃO -->
+            <div class="player-tip-bar">
+                <span>💡 <strong>Dica de Uso:</strong> Clique duas vezes sobre a miniatura de qualquer vídeo abaixo para dar PLAY direto em tela cheia!</span>
+            </div>
+
+            <!-- LAYOUT PRINCIPAL DO PLAYER -->
+            <div class="modal-body-layout full-width-layout">
+                <div class="video-player-area">
+                    <div class="video-screen-container" id="video-container">
+                        <iframe id="main-video-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+                        <div class="video-loader" id="video-loader">
+                            <div class="spinner"></div>
+                            <span>Carregando treinos...</span>
+                        </div>
+                    </div>
+
+                    <div class="video-details-bar">
+                        <div class="video-info">
+                            <h4 id="current-lesson-title">Módulo Selecionado</h4>
+                            <p id="current-lesson-desc">Assista aos treinos em vídeo diretamente pelo player acima.</p>
+                        </div>
+                        <div class="video-actions">
+                            <button class="btn-complete-lesson" id="mark-complete-btn">
+                                <span class="check-ic">✓</span>
+                                <span id="complete-btn-text">Marcar Módulo como Concluído</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
     <footer class="footer text-center">
         <div class="container">
             <div class="footer-brand">TREINO <span class="highlight">INTELIGENTE</span></div>
@@ -196,6 +344,7 @@
             </p>
         </div>
     </footer>
+
     <script src="main.js"></script>
 </body>
 </html>

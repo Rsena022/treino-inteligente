@@ -1,29 +1,277 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Scroll reveal animation for cards
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+/* ════════════════════════════════════════════════════════
+   PLATAFORMA STREAMING TREINO INTELIGENTE — ENGINE JS
+════════════════════════════════════════════════════════ */
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                observer.unobserve(entry.target);
+// CONFIGURAÇÃO DO SUPABASE
+const SUPABASE_URL = "https://yizccvmpfuwccvxcbgwa.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpemNjdm1wZnV3Y2N2eGNiZ3dhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2MTQxMjUsImV4cCI6MjEwMTE5MDEyNX0.3NB4O7UYuEnTmCnCVRuuauADYRPN8Fc6aSFsS3p4efs";
+
+let supabaseClient = null;
+if (typeof supabase !== 'undefined' && SUPABASE_URL && SUPABASE_ANON_KEY) {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // 1. LÓGICA DA TELA DE LOGIN E AUTENTICAÇÃO
+    const loginOverlay = document.getElementById('login-overlay');
+    const loginForm = document.getElementById('login-form');
+    const loginEmailInput = document.getElementById('login-email');
+    const loginErrorMsg = document.getElementById('login-error-msg');
+    const loggedUserEmailSpan = document.getElementById('logged-user-email');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Verificar se o aluno já está logado
+    const savedUserEmail = localStorage.getItem('treino_aluno_email');
+    if (savedUserEmail) {
+        showPlatformForUser(savedUserEmail);
+    } else {
+        if (loginOverlay) loginOverlay.classList.remove('hidden');
+    }
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = loginEmailInput.value.trim().toLowerCase();
+            if (!email) return;
+
+            hideLoginError();
+
+            // Se o Supabase estiver configurado com as chaves reais:
+            if (supabaseClient) {
+                try {
+                    let accessGranted = false;
+
+                    // 1ª Tentativa: Função de segurança RPC (se foi criada no banco)
+                    const { data: rpcData, error: rpcError } = await supabaseClient
+                        .rpc('verificar_acesso_aluno', { email_consulta: email });
+
+                    if (!rpcError && rpcData && rpcData.length > 0) {
+                        if (rpcData[0].autorizado) {
+                            accessGranted = true;
+                        } else {
+                            showLoginError(rpcData[0].mensagem || "E-mail não encontrado ou acesso inativo.");
+                            return;
+                        }
+                    } else {
+                        // 2ª Tentativa (Fallback): Consulta direta na tabela 'treino_alunos'
+                        const { data, error } = await supabaseClient
+                            .from('treino_alunos')
+                            .select('status')
+                            .eq('email', email)
+                            .single();
+
+                        if (error || !data) {
+                            showLoginError("E-mail não encontrado nos nossos registros de compra. Verifique o e-mail digitado.");
+                            return;
+                        }
+
+                        if (data.status === 'reembolsado' || data.status === 'bloqueado') {
+                            showLoginError("⛔ Seu acesso a esta conta está inativo ou foi reembolsado. Caso considere um engano, fale com nosso suporte.");
+                            return;
+                        }
+
+                        accessGranted = true;
+                    }
+
+                    if (accessGranted) {
+                        showPlatformForUser(email);
+                    }
+
+                } catch (err) {
+                    console.error("Erro no login:", err);
+                    showLoginError("Erro ao conectar com o servidor. Tente novamente.");
+                }
+            } else {
+                // Modo de Teste Local
+                console.log("Supabase ainda não configurado. Entrando em modo de demonstração.");
+                showPlatformForUser(email);
             }
         });
-    }, observerOptions);
+    }
 
-    const cards = document.querySelectorAll('.card');
-    
-    // Initial state for animation
-    cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-        observer.observe(card);
+    function showLoginError(msg) {
+        if (loginErrorMsg) {
+            loginErrorMsg.textContent = msg;
+            loginErrorMsg.style.display = 'block';
+        }
+    }
+
+    function hideLoginError() {
+        if (loginErrorMsg) {
+            loginErrorMsg.style.display = 'none';
+        }
+    }
+
+    function showPlatformForUser(email) {
+        localStorage.setItem('treino_aluno_email', email);
+        if (loggedUserEmailSpan) loggedUserEmailSpan.textContent = email;
+        if (loginOverlay) loginOverlay.classList.add('hidden');
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('treino_aluno_email');
+            if (loginOverlay) loginOverlay.classList.remove('hidden');
+        });
+    }
+
+    // 2. BANCO DE DADOS DOS MÓDULOS DE TREINOS (PASTAS DO GOOGLE DRIVE)
+    const courseData = {
+        semana1: {
+            title: "Módulo Semana 1: Fundamentos (5 Treinos Guiados)",
+            badge: "SEMANA 1",
+            folderId: "1IuJVFY6p-6d6YaJcdJcakvmcNgQ1H2oF",
+            driveFolder: "https://drive.google.com/drive/folders/1IuJVFY6p-6d6YaJcdJcakvmcNgQ1H2oF?usp=sharing",
+            desc: "Galeria de treinos da Semana 1. Clique duas vezes na imagem de qualquer vídeo para dar o PLAY."
+        },
+        semana2: {
+            title: "Módulo Semana 2: Resistência (5 Treinos Guiados)",
+            badge: "SEMANA 2",
+            folderId: "1E73HbV5FCb8g-9HNPqeKQZ72PgjJEXEt",
+            driveFolder: "https://drive.google.com/drive/folders/1E73HbV5FCb8g-9HNPqeKQZ72PgjJEXEt?usp=sharing",
+            desc: "Galeria de treinos da Semana 2. Clique duas vezes na imagem de qualquer vídeo para dar o PLAY."
+        },
+        semana3: {
+            title: "Módulo Semana 3: HIIT Explosão (5 Treinos Guiados)",
+            badge: "SEMANA 3",
+            folderId: "1WyNwwuMqX38kvG9UjGvtHkG8WSk63qj0",
+            driveFolder: "https://drive.google.com/drive/folders/1WyNwwuMqX38kvG9UjGvtHkG8WSk63qj0?usp=sharing",
+            desc: "Galeria de treinos da Semana 3. Clique duas vezes na imagem de qualquer vídeo para dar o PLAY."
+        },
+        semana4: {
+            title: "Módulo Semana 4: Superação & Definição (5 Treinos Guiados)",
+            badge: "SEMANA 4",
+            folderId: "18DSYp4aEffnIdhrrNCkpqb5j6fMjD1tI",
+            driveFolder: "https://drive.google.com/drive/folders/18DSYp4aEffnIdhrrNCkpqb5j6fMjD1tI?usp=sharing",
+            desc: "Galeria de treinos da Semana 4. Clique duas vezes na imagem de qualquer vídeo para dar o PLAY."
+        },
+        biblioteca: {
+            title: "Biblioteca de +500 Treinos Funcionais (Exercícios Individuais)",
+            badge: "BIBLIOTECA",
+            folderId: "1qFgRVdKxGDAeB9A3J3xh00e9acYgKetp",
+            driveFolder: "https://drive.google.com/drive/folders/1qFgRVdKxGDAeB9A3J3xh00e9acYgKetp?usp=sharing",
+            desc: "Biblioteca completa de exercícios individuais em vídeo."
+        }
+    };
+
+    // 3. SISTEMA DE PROGRESSO DO ALUNO (LOCAL STORAGE POR MÓDULO)
+    const STORAGE_KEY = 'treino_inteligente_completed_modules';
+    let completedModules = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+    function updateOverallProgress() {
+        const totalModules = Object.keys(courseData).length;
+        const completedCount = completedModules.length;
+        const percentage = Math.round((completedCount / totalModules) * 100) || 0;
+
+        const percentEl = document.getElementById('progress-percent');
+        const countEl = document.getElementById('progress-count');
+        const fillEl = document.getElementById('progress-fill');
+
+        if (percentEl) percentEl.textContent = `${percentage}%`;
+        if (countEl) countEl.textContent = `${completedCount} de ${totalModules} Módulos Concluídos`;
+        if (fillEl) fillEl.style.width = `${percentage}%`;
+    }
+    updateOverallProgress();
+
+    // 4. LÓGICA DO PLAYER E MODAL DE STREAMING (100% LARGURA)
+    const modal = document.getElementById('streaming-modal');
+    const backdrop = document.getElementById('modal-backdrop');
+    const closeBtn = document.getElementById('close-modal-btn');
+    const mainIframe = document.getElementById('main-video-iframe');
+    const videoLoader = document.getElementById('video-loader');
+
+    const moduleBadgeEl = document.getElementById('player-module-badge');
+    const moduleTitleEl = document.getElementById('player-module-title');
+    const driveBackupLink = document.getElementById('drive-backup-link');
+    const currentTitleEl = document.getElementById('current-lesson-title');
+    const currentDescEl = document.getElementById('current-lesson-desc');
+    const markCompleteBtn = document.getElementById('mark-complete-btn');
+    const completeBtnText = document.getElementById('complete-btn-text');
+
+    let currentActiveModuleKey = null;
+
+    // Abrir Modal do Módulo Selecionado
+    function openModulePlayer(moduleKey) {
+        const module = courseData[moduleKey];
+        if (!module) return;
+
+        currentActiveModuleKey = moduleKey;
+
+        moduleBadgeEl.textContent = module.badge;
+        moduleTitleEl.textContent = module.title;
+        driveBackupLink.href = module.driveFolder;
+        currentTitleEl.textContent = module.title;
+        currentDescEl.textContent = module.desc;
+
+        if (videoLoader) videoLoader.style.opacity = '1';
+
+        // URL oficial do visualizador de galeria do Google Drive em 100% de largura
+        const embeddedFolderUrl = `https://drive.google.com/embeddedfolderview?id=${module.folderId}#grid`;
+        mainIframe.src = embeddedFolderUrl;
+
+        mainIframe.onload = () => {
+            if (videoLoader) videoLoader.style.opacity = '0';
+        };
+        setTimeout(() => {
+            if (videoLoader) videoLoader.style.opacity = '0';
+        }, 1200);
+
+        updateCompletionButtonState(moduleKey);
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Fechar Modal
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        if (mainIframe) mainIframe.src = '';
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    // Marcar / Desmarcar Módulo Concluído
+    function updateCompletionButtonState(moduleKey) {
+        const isDone = completedModules.includes(moduleKey);
+        if (isDone) {
+            markCompleteBtn.classList.add('completed');
+            completeBtnText.textContent = 'Módulo Concluído ✓';
+        } else {
+            markCompleteBtn.classList.remove('completed');
+            completeBtnText.textContent = 'Marcar Módulo como Concluído';
+        }
+    }
+
+    if (markCompleteBtn) {
+        markCompleteBtn.addEventListener('click', () => {
+            if (!currentActiveModuleKey) return;
+
+            const indexInStorage = completedModules.indexOf(currentActiveModuleKey);
+
+            if (indexInStorage > -1) {
+                completedModules.splice(indexInStorage, 1);
+            } else {
+                completedModules.push(currentActiveModuleKey);
+            }
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(completedModules));
+
+            updateCompletionButtonState(currentActiveModuleKey);
+            updateOverallProgress();
+        });
+    }
+
+    // Triggers nos Botões dos Cards da Página
+    const openBtns = document.querySelectorAll('.open-player-btn');
+    openBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const moduleKey = btn.getAttribute('data-module');
+            openModulePlayer(moduleKey);
+        });
     });
 
 });
