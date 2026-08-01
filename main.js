@@ -220,18 +220,26 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentTitleEl) currentTitleEl.textContent = video.title;
         if (currentDescEl) currentDescEl.textContent = `Treino do ${moduleTitle}. Toque na tela do vídeo para dar o play em tela cheia.`;
 
-        if (videoLoader) videoLoader.style.opacity = '1';
+        if (videoLoader) {
+            videoLoader.style.display = 'flex';
+            videoLoader.style.opacity = '1';
+        }
 
         // URL de Preview direto do Google Drive (NÃO pede conta no celular!)
         const previewUrl = `https://drive.google.com/file/d/${video.id}/preview`;
         mainIframe.src = previewUrl;
 
-        mainIframe.onload = () => {
-            if (videoLoader) videoLoader.style.opacity = '0';
+        const hideLoader = () => {
+            if (videoLoader) {
+                videoLoader.style.opacity = '0';
+                setTimeout(() => {
+                    videoLoader.style.display = 'none';
+                }, 300);
+            }
         };
-        setTimeout(() => {
-            if (videoLoader) videoLoader.style.opacity = '0';
-        }, 1200);
+
+        mainIframe.onload = hideLoader;
+        setTimeout(hideLoader, 400);
 
         // Destacar card ativo no grid
         const allCards = document.querySelectorAll('.video-card-item');

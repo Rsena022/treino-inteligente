@@ -752,10 +752,12 @@ h1, h2, h3, h4, h5 {
 .video-screen-container {
     width: 100%;
     aspect-ratio: 16 / 9; /* WIDESCREEN 16:9 NATIVO NO CELULAR E PC */
+    min-height: 220px;
     flex-shrink: 0;
     background: #000;
     position: relative;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
 }
 
 .video-screen-container iframe {
@@ -763,6 +765,8 @@ h1, h2, h3, h4, h5 {
     height: 100%;
     border: none;
     display: block;
+    position: relative;
+    z-index: 1;
 }
 
 .btn-fullscreen {
@@ -803,7 +807,8 @@ h1, h2, h3, h4, h5 {
     color: var(--text-muted);
     font-size: 12px;
     transition: opacity 0.3s;
-    pointer-events: none;
+    pointer-events: none !important;
+    z-index: 10;
 }
 
 .spinner {
@@ -813,6 +818,7 @@ h1, h2, h3, h4, h5 {
     border-top-color: var(--accent-neon);
     border-radius: 50%;
     animation: spin 1s infinite linear;
+    pointer-events: none !important;
 }
 
 @keyframes spin {
