@@ -192,6 +192,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const videoGridContainer = document.getElementById('video-grid-container');
     const searchBoxContainer = document.getElementById('search-box-container');
     const searchVideoInput = document.getElementById('search-video-input');
+    const fullscreenBtn = document.getElementById('btn-fullscreen');
+    const videoScreenContainer = document.getElementById('video-container');
+
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+            const targetEl = videoScreenContainer || mainIframe;
+            if (!targetEl) return;
+
+            if (targetEl.requestFullscreen) {
+                targetEl.requestFullscreen();
+            } else if (targetEl.webkitRequestFullscreen) {
+                targetEl.webkitRequestFullscreen();
+            } else if (mainIframe && mainIframe.webkitRequestFullscreen) {
+                mainIframe.webkitRequestFullscreen();
+            }
+        });
+    }
 
     let currentActiveModuleKey = null;
     let currentActiveVideoId = null;
