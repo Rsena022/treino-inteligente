@@ -758,11 +758,13 @@ h1, h2, h3, h4, h5 {
     position: relative;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.8);
     overflow: hidden;
+    border-radius: 12px;
 }
 
 .video-screen-container iframe {
     width: 100%;
-    height: 100%;
+    height: calc(100% + 56px); /* COMPENSA O CORTE DA FAIXA DO TOPO */
+    margin-top: -48px; /* CORTA FORA A FAIXA PRETA DO TOPO DO GOOGLE DRIVE! */
     border: none;
     display: block;
     position: relative;
@@ -1076,8 +1078,6 @@ h1, h2, h3, h4, h5 {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 COLUNAS NO CELULAR */
     gap: 12px;
-    max-height: 440px;
-    overflow-y: auto;
     padding-right: 4px;
 }
 
@@ -1085,7 +1085,6 @@ h1, h2, h3, h4, h5 {
     .video-grid-container {
         grid-template-columns: repeat(4, 1fr); /* 4 COLUNAS NO PC */
         gap: 18px;
-        max-height: 500px;
     }
 }
 

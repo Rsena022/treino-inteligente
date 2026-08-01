@@ -234,12 +234,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 videoLoader.style.opacity = '0';
                 setTimeout(() => {
                     videoLoader.style.display = 'none';
-                }, 300);
+                }, 200);
             }
         };
 
         mainIframe.onload = hideLoader;
-        setTimeout(hideLoader, 400);
+        setTimeout(hideLoader, 300);
 
         // Destacar card ativo no grid
         const allCards = document.querySelectorAll('.video-card-item');
