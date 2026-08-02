@@ -179,7 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const backdrop = document.getElementById('modal-backdrop');
     const closeBtn = document.getElementById('close-modal-btn');
     const mainIframe = document.getElementById('main-video-iframe');
+    const mainVideoPlayer = document.getElementById('main-video-player');
     const videoLoader = document.getElementById('video-loader');
+    const centralPlayBtn = document.getElementById('central-play-btn');
 
     const moduleBadgeEl = document.getElementById('player-module-badge');
     const moduleTitleEl = document.getElementById('player-module-title');
@@ -197,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (fullscreenBtn) {
         fullscreenBtn.addEventListener('click', () => {
-            const targetEl = videoScreenContainer || mainIframe;
+            const targetEl = videoScreenContainer || mainVideoPlayer || mainIframe;
             if (!targetEl) return;
 
             if (targetEl.requestFullscreen) {
@@ -212,8 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentActiveModuleKey = null;
     let currentActiveVideoId = null;
-
-    const centralPlayBtn = document.getElementById('central-play-btn');
 
     if (centralPlayBtn && mainVideoPlayer) {
         centralPlayBtn.addEventListener('click', () => {
