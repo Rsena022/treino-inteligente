@@ -13,6 +13,7 @@
 - **2. Página de Vendas (Landing Page CRO R$ 14,90)**:
   - 📂 Pasta: `C:\Users\senar\.gemini\antigravity-ide\scratch\landing-page-treino-inteligente\`
   - 💻 Servidor Local de Preview: **[http://localhost:3000](http://localhost:3000)**
+  - 🌐 Domínio Alvo Vercel: **[pack-treino-inteligente.vercel.app](https://pack-treino-inteligente.vercel.app)**
   - 🐙 Repositório GitHub: `Rsena022/landing-page-treino-inteligente`
 
 ---
