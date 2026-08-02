@@ -28,8 +28,8 @@ export default async function handler(req, res) {
             }
         }
 
-        // Tenta extrair o e-mail de todos os campos possíveis do payload da Cakto
-        const email = (
+        // 1. Tenta extrair o e-mail pelos caminhos conhecidos do payload da Cakto
+        let email = (
             body.customer?.email ||
             body.buyer?.email ||
             body.payer?.email ||
@@ -47,14 +47,18 @@ export default async function handler(req, res) {
             ""
         ).trim().toLowerCase();
 
-        // Se for um teste da Cakto sem e-mail explícito:
+        // 2. Se não encontrou nos campos padrões, varre o JSON completo via Regex
         if (!email) {
-            console.log("Payload recebido da Cakto sem e-mail direto (teste de conexão):", JSON.stringify(body));
-            return res.status(200).json({
-                success: true,
-                message: "Webhook da Cakto recebido com sucesso (Teste de Conexão OK)!",
-                receivedBody: body
-            });
+            const bodyStr = JSON.stringify(body);
+            const emailMatch = bodyStr.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+            if (emailMatch && emailMatch[0]) {
+                email = emailMatch[0].toLowerCase();
+            }
+        }
+
+        // 3. Se for um teste de conexão da Cakto sem e-mail, atribui o e-mail de teste padrão
+        if (!email) {
+            email = "alunoteste_cakto@gmail.com";
         }
 
         // Identificar se é Aprovação de Compra ou Reembolso/Chargeback
