@@ -38,17 +38,25 @@
          TELA DE LOGIN EXCLUSIVA POR E-MAIL (SUPABASE AUTH)
     ════════════════════════════════════════════════════════ -->
     <div class="login-overlay" id="login-overlay">
-            <div class="login-brand" style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px;">
-                <img src="logo.png" alt="Logo Treino Inteligente" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid #00F0FF; box-shadow: 0 0 15px rgba(0,240,255,0.6); object-fit: cover;">
-                <h2 style="margin: 0;">TREINO <span style="color: var(--accent-neon);">INTELIGENTE</span></h2>
+        <div class="login-card">
+            <div class="login-brand">
+                <img src="logo.png" alt="Logo Treino Inteligente" class="login-logo-img">
+                <h2>TREINO <span>INTELIGENTE</span></h2>
             </div>
             
-            <p class="login-sub">Digite o e-mail utilizado na compra para liberar seu acesso às aulas:</p>
+            <div class="login-badge">
+                <span class="live-pulse"></span> PORTAL DE MEMBROS
+            </div>
+
+            <p class="login-sub">Digite o e-mail cadastrado na compra para liberar seu acesso às aulas:</p>
 
             <form id="login-form">
                 <div class="input-group">
                     <label for="login-email">Seu E-mail de Compra:</label>
-                    <input type="email" id="login-email" placeholder="seuemail@exemplo.com" required autocomplete="email">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <input type="email" id="login-email" placeholder="seuemail@exemplo.com" required autocomplete="email">
+                    </div>
                 </div>
 
                 <div class="login-error-msg" id="login-error-msg"></div>
@@ -60,7 +68,8 @@
             </form>
 
             <div class="login-footer-note">
-                🔒 Acesso seguro e verificado automaticamente.
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>Acesso seguro e verificado automaticamente</span>
             </div>
         </div>
     </div>
