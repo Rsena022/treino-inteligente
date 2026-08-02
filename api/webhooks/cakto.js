@@ -82,28 +82,58 @@ export default async function handler(req, res) {
             statusAluno = 'reembolsado';
         }
 
-        // Fazer o Upsert diretamente na API REST do Supabase
-        const supabaseEndpoint = `${SUPABASE_URL}/rest/v1/treino_alunos`;
-        const response = await fetch(supabaseEndpoint, {
-            method: 'POST',
+        // Checa se o aluno já existe no Supabase (GET) e atualiza (PATCH) ou cria (POST)
+        const checkUrl = `${SUPABASE_URL}/rest/v1/treino_alunos?email=eq.${encodeURIComponent(email)}`;
+        const checkRes = await fetch(checkUrl, {
+            method: 'GET',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                'Content-Type': 'application/json',
-                'Prefer': 'resolution=merge-duplicates'
-            },
-            body: JSON.stringify({
-                email: email,
-                status: statusAluno
-            })
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
         });
+
+        const existingRecords = await checkRes.json().catch(() => []);
+
+        let response;
+        if (Array.isArray(existingRecords) && existingRecords.length > 0) {
+            // E-mail já existe: Atualiza o status
+            const patchUrl = `${SUPABASE_URL}/rest/v1/treino_alunos?email=eq.${encodeURIComponent(email)}`;
+            response = await fetch(patchUrl, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify({
+                    status: statusAluno
+                })
+            });
+        } else {
+            // E-mail novo: Insere na tabela
+            const postUrl = `${SUPABASE_URL}/rest/v1/treino_alunos`;
+            response = await fetch(postUrl, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    status: statusAluno
+                })
+            });
+        }
 
         if (!response.ok) {
             const errorText = await response.text();
             console.error('Erro ao salvar no Supabase:', errorText);
             return res.status(200).json({
                 success: true,
-                warning: 'Webhook recebido com sucesso. Aviso no banco.',
+                warning: 'Webhook recebido, mas houve aviso no banco.',
                 details: errorText
             });
         }
