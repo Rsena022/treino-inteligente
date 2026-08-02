@@ -1,5 +1,5 @@
 const SUPABASE_URL = "https://yizccvmpfuwccvxcbgwa.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpemNjdm1wZnV3Y2N2eGNiZ3dhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2MTQxMjUsImV4cCI6MjEwMTE5MDEyNX0.3NB4O7UYuEnTmCnCVRuuauADYRPN8Fc6aSFsS3p4efs";
+const SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpemNjdm1wZnV3Y2N2eGNiZ3dhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTYxNDEyNSwiZXhwIjoyMTAxMTkwMTI1fQ.VYt6nbkuHgfS0mcUtnigplAe2Jp3KT8yRngG22Db_Vo";
 
 export default async function handler(req, res) {
     // Configurar cabeçalhos CORS para aceitar requisições de qualquer origem da Cakto
@@ -82,13 +82,13 @@ export default async function handler(req, res) {
             statusAluno = 'reembolsado';
         }
 
-        // Checa se o aluno já existe no Supabase (GET) e atualiza (PATCH) ou cria (POST)
+        // Checa se o aluno já existe no Supabase (GET) usando a chave admin service_role
         const checkUrl = `${SUPABASE_URL}/rest/v1/treino_alunos?email=eq.${encodeURIComponent(email)}`;
         const checkRes = await fetch(checkUrl, {
             method: 'GET',
             headers: {
-                'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                'apikey': SUPABASE_SERVICE_ROLE_KEY,
+                'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`
             }
         });
 
@@ -101,8 +101,8 @@ export default async function handler(req, res) {
             response = await fetch(patchUrl, {
                 method: 'PATCH',
                 headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'apikey': SUPABASE_SERVICE_ROLE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
                     'Content-Type': 'application/json',
                     'Prefer': 'return=representation'
                 },
@@ -111,13 +111,13 @@ export default async function handler(req, res) {
                 })
             });
         } else {
-            // E-mail novo: Insere na tabela
+            // E-mail novo: Insere na tabela ignorando RLS
             const postUrl = `${SUPABASE_URL}/rest/v1/treino_alunos`;
             response = await fetch(postUrl, {
                 method: 'POST',
                 headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'apikey': SUPABASE_SERVICE_ROLE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
                     'Content-Type': 'application/json',
                     'Prefer': 'return=representation'
                 },
