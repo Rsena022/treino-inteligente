@@ -306,6 +306,12 @@
                     <div class="video-screen-container" id="video-container">
                         <video id="main-video-player" controls playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: contain; background: #000; display: block;"></video>
                         <iframe id="main-video-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="display: none;"></iframe>
+                        
+                        <!-- BOTÃO DE PLAY NO CENTRO DO VÍDEO -->
+                        <button class="central-play-btn" id="central-play-btn" aria-label="Dar Play no Vídeo">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </button>
+
                         <div class="video-loader" id="video-loader">
                             <div class="spinner"></div>
                             <span>Carregando treino...</span>

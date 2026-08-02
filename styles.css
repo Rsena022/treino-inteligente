@@ -772,6 +772,42 @@ h1, h2, h3, h4, h5 {
     z-index: 2;
 }
 
+.central-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    background: var(--accent-neon);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    cursor: pointer;
+    z-index: 5;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.6), 0 0 50px rgba(0, 240, 255, 0.3);
+    transition: transform 0.25s ease, background-color 0.25s ease, opacity 0.3s ease;
+}
+
+.central-play-btn svg {
+    margin-left: 3px;
+}
+
+.central-play-btn:hover, .central-play-btn:active {
+    transform: translate(-50%, -50%) scale(1.15);
+    background: #fff;
+    box-shadow: 0 0 35px rgba(0, 240, 255, 0.8);
+}
+
+.central-play-btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+    display: none !important;
+}
+
 .video-screen-container iframe {
     width: 100%;
     height: calc(100% + 56px); /* COMPENSA O CORTE DA FAIXA DO TOPO SE USAR IFRAME FALLBACK */

@@ -213,11 +213,28 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentActiveModuleKey = null;
     let currentActiveVideoId = null;
 
-    const mainVideoPlayer = document.getElementById('main-video-player');
+    const centralPlayBtn = document.getElementById('central-play-btn');
+
+    if (centralPlayBtn && mainVideoPlayer) {
+        centralPlayBtn.addEventListener('click', () => {
+            mainVideoPlayer.play().catch(() => {});
+            centralPlayBtn.classList.add('hidden');
+        });
+
+        mainVideoPlayer.addEventListener('play', () => {
+            if (centralPlayBtn) centralPlayBtn.classList.add('hidden');
+        });
+
+        mainVideoPlayer.addEventListener('pause', () => {
+            if (centralPlayBtn) centralPlayBtn.classList.remove('hidden');
+        });
+    }
 
     // Carregar Vídeo Específico no Player sem Pedir Conta
     function playVideo(video, moduleTitle) {
         currentActiveVideoId = video.id;
+
+        if (centralPlayBtn) centralPlayBtn.classList.remove('hidden');
 
         if (currentTitleEl) currentTitleEl.textContent = video.title;
         if (currentDescEl) currentDescEl.textContent = `Treino do ${moduleTitle}. Use a barra do vídeo para avançar ou voltar a qualquer momento.`;
