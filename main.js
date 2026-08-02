@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 videoLoader.style.opacity = '0';
                 setTimeout(() => {
                     videoLoader.style.display = 'none';
-                }, 200);
+                }, 150); // fade-out rápido
             }
         };
 
@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
             mainIframe.onload = hideLoader;
         }
 
-        setTimeout(hideLoader, 2000);
+        setTimeout(hideLoader, 800); // MÁXIMO 800ms - tela preta some em menos de 1 segundo
 
         // Destacar card ativo no grid
         const allCards = document.querySelectorAll('.video-card-item');
