@@ -213,21 +213,21 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentActiveModuleKey = null;
     let currentActiveVideoId = null;
 
+    const mainVideoPlayer = document.getElementById('main-video-player');
+
     // Carregar Vídeo Específico no Player sem Pedir Conta
     function playVideo(video, moduleTitle) {
         currentActiveVideoId = video.id;
 
         if (currentTitleEl) currentTitleEl.textContent = video.title;
-        if (currentDescEl) currentDescEl.textContent = `Treino do ${moduleTitle}. Toque na tela do vídeo para dar o play em tela cheia.`;
+        if (currentDescEl) currentDescEl.textContent = `Treino do ${moduleTitle}. Use a barra do vídeo para avançar ou voltar a qualquer momento.`;
 
         if (videoLoader) {
             videoLoader.style.display = 'flex';
             videoLoader.style.opacity = '1';
         }
 
-        // URL de Preview direto do Google Drive (NÃO pede conta no celular!)
         const previewUrl = `https://drive.google.com/file/d/${video.id}/preview`;
-        mainIframe.src = previewUrl;
 
         const hideLoader = () => {
             if (videoLoader) {
@@ -238,7 +238,30 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        mainIframe.onload = hideLoader;
+        // Preferir player HTML5 nativo para exibir a barra de avanço/recuo nativa
+        if (mainVideoPlayer) {
+            mainVideoPlayer.style.display = 'block';
+            if (mainIframe) mainIframe.style.display = 'none';
+
+            mainVideoPlayer.src = `https://drive.google.com/uc?export=download&id=${video.id}`;
+            if (video.thumb) mainVideoPlayer.poster = video.thumb;
+
+            mainVideoPlayer.onloadedmetadata = hideLoader;
+            mainVideoPlayer.onerror = () => {
+                // Fallback para iframe preview se a tag video nativa não carregar
+                mainVideoPlayer.style.display = 'none';
+                if (mainIframe) {
+                    mainIframe.style.display = 'block';
+                    mainIframe.src = previewUrl;
+                }
+                hideLoader();
+            };
+        } else if (mainIframe) {
+            mainIframe.style.display = 'block';
+            mainIframe.src = previewUrl;
+            mainIframe.onload = hideLoader;
+        }
+
         setTimeout(hideLoader, 300);
 
         // Destacar card ativo no grid

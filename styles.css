@@ -730,12 +730,13 @@ h1, h2, h3, h4, h5 {
     text-align: center;
 }
 
-/* Layout Expandido 100% sem Sidebar Repetitiva */
+/* Layout Expandido 100% com Rolagem Suave no Celular */
 .full-width-layout {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    overflow: hidden;
+    overflow-y: auto; /* PERMITE ROLAGEM SUAVE NO CELULAR COM O POLEGAR */
+    -webkit-overflow-scrolling: touch; /* ROLAGEM NATIVA DO IOS/ANDROID */
     width: 100%;
 }
 
@@ -746,7 +747,7 @@ h1, h2, h3, h4, h5 {
     background: #000;
     position: relative;
     width: 100%;
-    height: 100%;
+    min-height: min-content;
 }
 
 .video-screen-container {
@@ -761,9 +762,19 @@ h1, h2, h3, h4, h5 {
     border-radius: 12px;
 }
 
+.video-screen-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+    display: block;
+    position: relative;
+    z-index: 2;
+}
+
 .video-screen-container iframe {
     width: 100%;
-    height: calc(100% + 56px); /* COMPENSA O CORTE DA FAIXA DO TOPO */
+    height: calc(100% + 56px); /* COMPENSA O CORTE DA FAIXA DO TOPO SE USAR IFRAME FALLBACK */
     margin-top: -48px; /* CORTA FORA A FAIXA PRETA DO TOPO DO GOOGLE DRIVE! */
     border: none;
     display: block;
