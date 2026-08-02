@@ -810,11 +810,11 @@ h1, h2, h3, h4, h5 {
 
 .video-screen-container iframe {
     width: 100%;
-    height: 100%;
+    height: calc(100% + 40px); /* COMPENSA O CORTE DE 40px DO TOPO */
     border: none;
     display: block;
     position: absolute;
-    top: 0;
+    top: -40px; /* CORTA FORA APENAS A BARRA DO TOPO DO GOOGLE DRIVE */
     left: 0;
     z-index: 1;
 }
