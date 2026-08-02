@@ -55,7 +55,9 @@
    - Fila ampliada para **35 compradores únicos** de diferentes cidades e estados do Brasil com algoritmo de embaralhamento em fila (*Shuffle Queue*) sem repetição.
 4. **Identidade Visual, Logo & Favicon**:
    - Criada logo oficial futurista em Ciano Neon com símbolo de haltere metálico e raio.
-   - Aplicados **Favicon (`favicon.png`)**, imagens no cabeçalho/footer e meta tags **Open Graph (`og:image`)** para exibição de capa ao compartilhar o link no WhatsApp e redes sociais.
+5. **Order Bump de Alta Conversão (Cakto)**:
+   - Criado o produto adicional **"Protocolo Barriga Zero & Cardápio Prático de 21 Dias"** por **R$ 9,90**.
+   - Gerado o guia completo em formato profissional ([protocolo_barriga_zero_21_dias.md](file:///C:/Users/senar/.gemini/antigravity-ide/scratch/treino-inteligente/assets/protocolo_barriga_zero_21_dias.md)) contendo 3 Fases Nutricionais, Tabela de Substituições, 10 Receitas de Chás Termogênicos e Guia de Compras Econômicas.
 
 ---
 
