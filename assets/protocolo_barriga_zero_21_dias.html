@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo Barriga Zero & Cardápio Prático de 21 Dias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00F0FF;
+            --primary-dark: #0044CC;
+            --bg-dark: #0A0E17;
+            --card-bg: #111726;
+            --text-main: #222222;
+            --text-muted: #666666;
+            --accent-green: #00E676;
+            --accent-gold: #FFB300;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .ebook-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 50px 60px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        /* CAPA */
+        .cover {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #0A0E17 0%, #162035 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-badge {
+            display: inline-block;
+            background: rgba(0, 240, 255, 0.15);
+            color: #00F0FF;
+            border: 1px solid #00F0FF;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .cover h1 span {
+            color: #00F0FF;
+        }
+
+        .cover p {
+            font-size: 1.05rem;
+            color: #94A3B8;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* SEÇÕES */
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: #0F172A;
+            border-bottom: 3px solid #00F0FF;
+            padding-bottom: 8px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: #1E293B;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #334155;
+        }
+
+        /* LISTAS E PILARES */
+        .pilares-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .pilar-card {
+            background: #F1F5F9;
+            border-left: 4px solid #0044CC;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .pilar-card strong {
+            color: #0F172A;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+
+        /* FASES DO CARDÁPIO */
+        .fase-box {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .fase-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #E2E8F0;
+            margin-bottom: 20px;
+        }
+
+        .fase-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .fase-1 .fase-title { color: #059669; }
+        .fase-2 .fase-title { color: #D97706; }
+        .fase-3 .fase-title { color: #DC2626; }
+
+        .refeicao-item {
+            margin-bottom: 16px;
+        }
+
+        .refeicao-nome {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #0F172A;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .refeicao-item ul {
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .refeicao-item li {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 4px;
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .refeicao-item li::before {
+            content: "•";
+            color: #0044CC;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* TABELA DE SUBSTITUIÇÕES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        th {
+            background-color: #0F172A;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) {
+            background-color: #F8FAFC;
+        }
+
+        /* RECEITAS & CHÁS */
+        .receita-card {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .receita-card strong {
+            color: #0F172A;
+        }
+
+        /* FOOTER E IMPRESSÃO */
+        .ebook-footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #E2E8F0;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94A3B8;
+        }
+
+        @media print {
+            body {
+                background-color: #ffffff;
+                padding: 0;
+            }
+            .ebook-container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            .fase-box, .receita-card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ebook-container">
+        
+        <!-- CAPA -->
+        <div class="cover">
+            <span class="cover-badge">GUIA EXCLUSIVO ORDER BUMP</span>
+            <h1>PROTOCOLO <span>BARRIGA ZERO</span> & CARDÁPIO DE 21 DIAS</h1>
+            <p>Acelere o metabolismo, desinche a região abdominal e potencialize os treinos em vídeo sem passar fome.</p>
+        </div>
+
+        <!-- INTRODUÇÃO -->
+        <h2>📋 Apresentação & Boas-Vindas</h2>
+        <p>Seja muito bem-vindo(a) ao <strong>Protocolo Barriga Zero & Cardápio Prático de 21 Dias</strong>!</p>
+        <p>Este guia foi elaborado para ser o acelerador número #1 dos seus resultados com os treinos. Esqueça dietas malucas ou alimentos caros. Nosso foco é <strong>praticidade, alimentos reais do seu dia a dia e estímulo constante à queima de gordura corporal</strong>.</p>
+
+        <!-- PILARES -->
+        <h2>⚡ Os 5 Pilares da Definição Abdominal</h2>
+        <div class="pilares-grid">
+            <div class="pilar-card">
+                <strong>1. Déficit Calórico sem Passar Fome</strong>
+                Priorizar alimentos de grande volume e baixa densidade calórica para manter a saciedade.
+            </div>
+            <div class="pilar-card">
+                <strong>2. Consumo Adequado de Proteínas</strong>
+                Mantém a massa muscular firme, acelera a recuperação dos treinos e dá saciedade por horas.
+            </div>
+            <div class="pilar-card">
+                <strong>3. Eliminação da Retenção de Líquidos</strong>
+                Combater o inchaço abdominal reduzindo excessos de sódio/açúcar e aumentando alimentos drenantes.
+            </div>
+            <div class="pilar-card">
+                <strong>4. Hidratação Estratégica</strong>
+                Beber de 35ml a 40ml de água por kg de peso corporal todos os dias (ex: 70kg = 2,5L a 2,8L/dia).
+            </div>
+            <div class="pilar-card">
+                <strong>5. Controle do Cortisol e Sono</strong>
+                Dormir de 7 a 8 horas para reduzir o cortisol, hormônio responsável pelo acúmulo de gordura na barriga.
+            </div>
+        </div>
+
+        <!-- CARDÁPIO DE 21 DIAS -->
+        <h2>🗓️ O Cardápio Prático de 21 Dias</h2>
+
+        <!-- FASE 1 -->
+        <div class="fase-box fase-1">
+            <div class="fase-header">
+                <div class="fase-title">🟢 FASE 1: DIAS 1 A 7 — DESINFLAMAÇÃO & DETOX</div>
+                <small style="color:#059669; font-weight:700;">FOCO: DESINCHAR E LIMPAR O ORGANISMO</small>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🥞 CAFÉ DA MANHÃ (Escolha 1):</div>
+                <ul>
+                    <li><strong>Opção A:</strong> 2 ovos mexidos + 1 fatia de pão integral (ou tapioca 30g) + Café/chá sem açúcar.</li>
+                    <li><strong>Opção B:</strong> 1 banana amassada + 2 col. aveia + canela polvilhada.</li>
+                    <li><strong>Opção C:</strong> Omelete de 2 ovos com tomate picado e espinafre.</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🥗 ALMOÇO (Escolha 1):</div>
+                <ul>
+                    <li><strong>Opção A:</strong> 120g peito de frango + 3 col. arroz integral + 1 concha feijão + Salada verde com azeite e limão.</li>
+                    <li><strong>Opção B:</strong> 130g carne moída magra (patinho) + 100g mandioca cozida + Salada de tomate e brocolis.</li>
+                    <li><strong>Opção C:</strong> 150g peixe grelhado + 4 col. quinoa ou arroz + Salada de folhas escuras.</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🍏 LANCHE DA TARDE (Escolha 1):</div>
+                <ul>
+                    <li><strong>Opção A:</strong> 1 maçã ou pera + 10 castanhas de caju.</li>
+                    <li><strong>Opção B:</strong> 1 iogurte natural desnatado + 1 col. chia.</li>
+                    <li><strong>Opção C:</strong> 2 ovos cozidos com pitada de sal e orégano.</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🍲 JANTAR (Escolha 1):</div>
+                <ul>
+                    <li><strong>Opção A:</strong> Omelete de 3 ovos + Salada verde abundante e legumes cozidos.</li>
+                    <li><strong>Opção B:</strong> Creme ou sopa detox de abóbora com frango desfiado.</li>
+                    <li><strong>Opção C:</strong> 120g de frango ou carne magra + Prato grande de salada.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FASE 2 -->
+        <div class="fase-box fase-2">
+            <div class="fase-header">
+                <div class="fase-title">🟡 FASE 2: DIAS 8 A 14 — QUEIMA ACELERADA</div>
+                <small style="color:#D97706; font-weight:700;">FOCO: ACELERAR METABOLISMO & DÉFICIT</small>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🥞 CAFÉ DA MANHÃ:</div>
+                <ul>
+                    <li><strong>Opção A:</strong> Panqueca Fit (1 banana + 2 ovos + 2 col. aveia + canela na frigideira).</li>
+                    <li><strong>Opção B:</strong> 2 fatias pão integral + queijo cottage + 2 ovos mexidos.</li>
+                    <li><strong>Opção C:</strong> Smoothie de 200ml leite vegetal + 1 fatia mamão + 1 col. aveia + chia.</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🥗 ALMOÇO:</div>
+                <ul>
+                    <li><strong>Opção A:</strong> 140g sobrecoxa assada sem pele + 100g batata-doce assada + Salada.</li>
+                    <li><strong>Opção B:</strong> 130g patinho grelhado + 3 col. arroz + 1 concha feijão + Couve refogada.</li>
+                    <li><strong>Opção C:</strong> Escondidinho Fit (120g frango desfiado + 100g purê de mandioca).</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🍏 LANCHE DA TARDE:</div>
+                <ul>
+                    <li><strong>Opção A:</strong> 1 fatia abacaxi com canela + 1 xícara chá verde gelado.</li>
+                    <li><strong>Opção B:</strong> 1 iogurte grego zero açúcar + 1 col. aveia.</li>
+                    <li><strong>Opção C:</strong> 3 quadradinhos chocolate 70% cacau + café preto.</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🍲 JANTAR:</div>
+                <ul>
+                    <li><strong>Opção A:</strong> Salada completa (120g atum em água + folhas + tomate + 1 ovo cozido).</li>
+                    <li><strong>Opção B:</strong> 120g carne moída com abobrinha refogada em cubos.</li>
+                    <li><strong>Opção C:</strong> Omelete de 3 claras e 1 gema com tomate e orégano.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FASE 3 -->
+        <div class="fase-box fase-3">
+            <div class="fase-header">
+                <div class="fase-title">🔴 FASE 3: DIAS 15 A 21 — DEFINIÇÃO & TÔNUS</div>
+                <small style="color:#DC2626; font-weight:700;">FOCO: DEFINIR ABDÔMEN & MANTER</small>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🥞 CAFÉ DA MANHÃ:</div>
+                <ul>
+                    <li><strong>Opção A:</strong> Crepioca (2 ovos + 1 col. goma tapioca + queijo minas).</li>
+                    <li><strong>Opção B:</strong> 2 ovos fritos na água + 1 fatia pão integral + Chá de gengibre com limão.</li>
+                    <li><strong>Opção C:</strong> 200ml água de coco + 1/2 maçã + 1 folha couve + gengibre.</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🥗 ALMOÇO:</div>
+                <ul>
+                    <li><strong>Opção A:</strong> 150g peito de frango + 80g purê abóbora cabotiá + Salada verde.</li>
+                    <li><strong>Opção B:</strong> 130g bife de alcatra + 3 col. arroz couve-flor + Salada de pepino.</li>
+                    <li><strong>Opção C:</strong> 140g peixe assado com cebola e azeite + 2 batatas pequenas.</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🍏 LANCHE DA TARDE:</div>
+                <ul>
+                    <li><strong>Opção A:</strong> 1 xícara morangos picados + 1 col. chia.</li>
+                    <li><strong>Opção B:</strong> 2 ovos cozidos com azeite e orégano.</li>
+                    <li><strong>Opção C:</strong> 1 xícara de pipoca de panela (pouco óleo).</li>
+                </ul>
+            </div>
+
+            <div class="refeicao-item">
+                <div class="refeicao-nome">🍲 JANTAR:</div>
+                <ul>
+                    <li><strong>Opção A:</strong> Sopa leve de legumes com frango em cubos.</li>
+                    <li><strong>Opção B:</strong> Omelete de 2 ovos com recheio de atum e tomate.</li>
+                    <li><strong>Opção C:</strong> 120g frango grelhado + brócolis e couve-flor refogados.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TABELA DE SUBSTITUIÇÕES -->
+        <h2>🔄 Tabela de Substituições Inteligentes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Alimento Original</th>
+                    <th>Substitutos Equivalentes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Peito de Frango (100g)</strong></td>
+                    <td>Patinho moído (90g), Tilápia (120g), Atum em água (1 lata), 3 Ovos cozidos</td>
+                </tr>
+                <tr>
+                    <td><strong>Arroz Integral (3 colheres)</strong></td>
+                    <td>Batata-doce cozida (90g), Mandioca (80g), Tapioca (30g), Pão Integral (2 fatias)</td>
+                </tr>
+                <tr>
+                    <td><strong>Banana (1 unidade)</strong></td>
+                    <td>Maçã (1 unid), Mamão (1 fatia), Morangos (8 unid), Abacaxi (2 fatias)</td>
+                </tr>
+                <tr>
+                    <td><strong>Azeite de Oliva (1 colher chá)</strong></td>
+                    <td>Castanhas de caju (6 unid), Abacate (30g), Pasta de amendoim (1 colher chá)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- CHÁS & BEBIDAS -->
+        <h2>🍵 10 Receitas de Chás Termogênicos & Drenantes</h2>
+        <div class="receita-card"><strong>1. Chá de Gengibre, Canela e Limão:</strong> Ferva 300ml de água com gengibre e canela por 5 min. Esprema meio limão ao desligar.</div>
+        <div class="receita-card"><strong>2. Chá Verde com Hortelã:</strong> Infusão de 1 colher de chá verde e hortelã fresca por 3 minutos.</div>
+        <div class="receita-card"><strong>3. Suco Seca Barriga:</strong> 200ml água de coco + 1 folha couve + 1/2 maçã + 1 fatia abacaxi + gengibre.</div>
+        <div class="receita-card"><strong>4. Chá de Hibisco com Cavalinha:</strong> Potente diurético para eliminar inchaço abdominal e pernas retidas.</div>
+        <div class="receita-card"><strong>5. Coffee Boost Pré-Treino:</strong> 1 xícara café preto + 1 pitada de canela + 1 colher chá óleo de coco.</div>
+        <div class="receita-card"><strong>6. Chá de Carqueja com Limão:</strong> Elimina a sensação de estufamento pós-refeição.</div>
+        <div class="receita-card"><strong>7. Infusão de Anis Estrelado e Erva-Doce:</strong> Combate gases e desconfortos abdominais.</div>
+        <div class="receita-card"><strong>8. Chá Amarelo com Gengibre:</strong> Termogênico suave rico em antioxidantes.</div>
+        <div class="receita-card"><strong>9. Suchá de Abacaxi com Chá Verde:</strong> Refrescante e queimador de gorduras.</div>
+        <div class="receita-card"><strong>10. Detox Noturno (Camomila + Passiflora):</strong> Reduz o cortisol à noite e melhora a qualidade do sono.</div>
+
+        <div class="ebook-footer">
+            &copy; 2026 Pack Treino Inteligente • Todos os direitos reservados.
+        </div>
+
+    </div>
+
+</body>
+</html>
