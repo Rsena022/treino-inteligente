@@ -52,8 +52,9 @@
 1. **Checkout Oficial & Pixel Hook**:
    - Link oficial da Cakto (`https://pay.cakto.com.br/v6wexsg_1016190`) integrado em **todos** os botões CTA da página (Navbar, Hero, Cartão de Oferta de R$ 14,90 e Barra Flutuante Mobile).
    - Hook do Meta Pixel (`InitiateCheckout`) atualizado para rastrear o link da Cakto.
-2. **Substituição do Player VSL por Arte Infográfica 100% em Português**:
-   - Gerada a arte infográfica de alta definição (`vsl_showcase_ptbr.png`) mostrando os mockups em smartphone e computador do aplicativo Treino Inteligente com as 3 colunas de valor: **+500 VÍDEOS GUIADOS**, **PROGRAMA 4 SEMANAS** e **3 BÔNUS EM PDF**.
+2. **Inclusão do Vídeo VSL de Vendas (`vsl_treino_inteligente.mp4`)**:
+   - Copiado o vídeo oficial `Treino Inteligente.mp4` da pasta do CapCut para a raiz da Landing Page (`vsl_treino_inteligente.mp4`).
+   - Implementado player **HTML5 responsivo** na Hero Section com overlay interativo em néon (*"CLIQUE PARA ASSISTIR À APRESENTAÇÃO COMPLETA"*), botão com animação de pulso, suporte a retina/mobile (`playsinline`) e transição suave de fade-out ao dar play.
 3. **Publicação no GitHub & Vercel**:
    - Repositório público no GitHub: `Rsena022/landing-page-treino-inteligente`.
    - URL oficial em produção: **`pack-treino-inteligente.vercel.app`**.
