@@ -17,8 +17,11 @@
   - 🐙 Repositório GitHub: **[Rsena022/landing-page-treino-inteligente](https://github.com/Rsena022/landing-page-treino-inteligente)**
 
 - **3. Funil de Vendas Quiz Interativo (500 Treinos Funcionais)**:
-  - 📂 Arquivo Local: `C:\Users\senar\OneDrive\raul 2\500-treinos-funcionais-funil.html`
-  - 🎯 Estrutura: Quiz gamificado com segmentação biotipo/idade/objetivo + comparador interativo antes/depois + tela de cálculo de plano + oferta CRO R$ 14,90 + Pixel UTMify.
+  - 📂 Pasta do Projeto: `C:\Users\senar\.gemini\antigravity-ide\scratch\funil-treino-inteligente\`
+  - 📂 Pasta Original: `C:\Users\senar\OneDrive\raul 2\`
+  - 🌐 Rota Online Ativa (Vercel): **[pack-treino-inteligente.vercel.app/quiz](https://pack-treino-inteligente.vercel.app/quiz)**
+  - 🐙 Repositório GitHub Dedicado: **[Rsena022/funil-treino-inteligente](https://github.com/Rsena022/funil-treino-inteligente)**
+  - 🎯 Estrutura: Quiz gamificado com segmentação biotipo/idade/objetivo + comparador interativo antes/depois + tela de cálculo de perfil + oferta CRO R$ 14,90 + Pixel UTMify.
 
 ---
 
