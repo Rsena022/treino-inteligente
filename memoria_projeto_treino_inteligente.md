@@ -16,6 +16,10 @@
   - 🌐 Domínio Produção Vercel: **[pack-treino-inteligente.vercel.app](https://pack-treino-inteligente.vercel.app)**
   - 🐙 Repositório GitHub: **[Rsena022/landing-page-treino-inteligente](https://github.com/Rsena022/landing-page-treino-inteligente)**
 
+- **3. Funil de Vendas Quiz Interativo (500 Treinos Funcionais)**:
+  - 📂 Arquivo Local: `C:\Users\senar\OneDrive\raul 2\500-treinos-funcionais-funil.html`
+  - 🎯 Estrutura: Quiz gamificado com segmentação biotipo/idade/objetivo + comparador interativo antes/depois + tela de cálculo de plano + oferta CRO R$ 14,90 + Pixel UTMify.
+
 ---
 
 ## 🚀 2. REGISTRO COMPLETO DAS IMPLEMENTAÇÕES E MELHORIAS (01/08 - 04/08):
