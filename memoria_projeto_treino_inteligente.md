@@ -49,9 +49,10 @@
 ---
 
 ### C. Página de Vendas (Landing Page CRO R$ 14,90):
-1. **Checkout Oficial & Pixel Hook**:
+1. **Checkout Oficial & Pixel de Rastreamento (UTMify & Meta Pixel Hook)**:
+   - Instalado o script oficial do **Pixel de Rastreio UTMify** (`pixelId: 6a6130d7d6b645b27cf1c514`) no `<head>` do `index.html` para rastreamento de campanhas, atribuição de UTMs e métricas de tráfego pago.
    - Link oficial da Cakto (`https://pay.cakto.com.br/v6wexsg_1016190`) integrado em **todos** os botões CTA da página (Navbar, Hero, Cartão de Oferta de R$ 14,90 e Barra Flutuante Mobile).
-   - Hook do Meta Pixel (`InitiateCheckout`) atualizado para rastrear o link da Cakto.
+   - Hook do Meta Pixel (`InitiateCheckout`) configurado para rastrear cliques para o checkout da Cakto.
 2. **Inclusão e Otimização do Vídeo VSL de Vendas (`vsl_treino_inteligente.mp4`)**:
    - Vídeo `Treino inteligente 2.mp4` otimizado e exportado em 720p / H.264 a 30fps.
    - Tamanho reduzido em **mais de 50%** (de 103 MB para **51 MB**), garantindo carregamento instantâneo e reprodução 100% fluida em conexões 4G/3G no celular.
